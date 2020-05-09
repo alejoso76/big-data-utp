@@ -2,7 +2,7 @@ import luigi
 
 #Una clase es un target (Objetivo), el objetivo es crear una salida de numeros
 class SalidaNumeros(luigi.Task):
-    def require(self):
+    def requires(self):
         return []
 
     def output(self):
@@ -19,18 +19,21 @@ class SalidaNumeros(luigi.Task):
 
 class Cuadrados(luigi.Task):
     #Requiere el proceso de salida de numeros para dar sus cuadrados
-    def require(self):
+    def requires(self):
         return [SalidaNumeros()]
 
     def output(self):
         return luigi.LocalTarget('cuadrados.txt')
 
     def run(self):
-        with self.input.()[0].open() as fin, self.output().open('w') as fout:
+        with self.input()[0].open() as fin, self.output().open('w') as fout:
             for linea in fin:
                 n = int(linea.strip())
                 val = n*n
-                fout.write("{}^2= {}\n".format(n, val))
+                fout.write("{}:{}\n".format(n, val))
 
-if __name__ = '__main__':
+#python test-luigi.py Cuadrados --local-scheduler
+if __name__ == '__main__':
     luigi.run()
+
+
