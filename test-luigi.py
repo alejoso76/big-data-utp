@@ -32,3 +32,5 @@ class Cuadrados(luigi.Task):
                 val = n*n
                 fout.write("{}^2= {}\n".format(n, val))
 
+if __name__ = '__main__':
+    luigi.run()
